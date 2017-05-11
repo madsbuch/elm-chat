@@ -3,8 +3,7 @@ module Main exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
-import WebSocket
-import Json.Decode as Json
+
 
 import Material
 import Material.Scheme
@@ -14,49 +13,11 @@ import Material.Options as Options exposing (css)
 import Material.Grid as G
 import Material.List as L
 
--- MODEL
-type alias Model = {
-      title : String
-    , chatMsgs : List String
-    , currentMsg : String
-    , mdl : Material.Model
-}
+import Model exposing (..)
+import Msg exposing (..)
+import Update exposing (..)
+import Subscriptions exposing (..)
 
-
-init : ( Model, Cmd Msg )
-init = ({
-          title = "Hello Chat"
-        , chatMsgs = []
-        , currentMsg = ""
-        , mdl = Material.model
-    }, Cmd.none)
-
-
---socketAddr = "ws://localhost:9160"
-socketAddr = "ws://echo.websocket.org"
-
--- Auxiliary
-onEnter : Msg -> Attribute Msg
-onEnter msg =
-    let
-        isEnter code =
-            if code == 13 then
-                Json.succeed msg
-            else
-                Json.fail "not ENTER"
-    in
-        on "keydown" (Json.andThen isEnter keyCode)
-
--- MESSAGES
-type Msg = 
-      NoOp
-    | UpdateCurrentMsg String
-    | AddMessage
-    | NewMessage String
-    | Mdl (Material.Msg Msg)
-
-type alias Mdl =
-    Material.Model
 
 -- VIEW
 view : Model -> Html Msg
@@ -99,21 +60,6 @@ inputForm model =
           , Options.onClick AddMessage
           ]
           [ text "Send Msg"]]
-
--- UPDATE
-update : Msg -> Model -> ( Model, Cmd Msg )
-update msg model =
-    case msg of
-        NoOp -> ( model, Cmd.none )
-        AddMessage -> ( { model | currentMsg = ""}, WebSocket.send socketAddr model.currentMsg )
-        UpdateCurrentMsg msg -> ( { model | currentMsg = msg }, Cmd.none )
-        NewMessage msg -> ( { model | chatMsgs = msg :: model.chatMsgs}, Cmd.none )
-        Mdl msg_ -> Material.update Mdl msg_ model
-
--- SUBSCRIPTIONS
-
-subscriptions : Model -> Sub Msg
-subscriptions model = WebSocket.listen socketAddr NewMessage
 
 -- MAIN
 
