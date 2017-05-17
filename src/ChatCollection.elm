@@ -1,4 +1,11 @@
 module ChatCollection exposing (..)
+{-
+  Rsponsibility of this library:
+  * Marhsalling / de-marshalling
+  * 
+
+-}
+
 
 import WebSocket
 
@@ -11,22 +18,12 @@ socketAddr = "ws://echo.websocket.org"
 
 -- Model for this collection
 type alias ObjectType = {
-    msg : String 
+    msg : String
 }
 type alias Model = {
     objects : List ObjectType
 }
 
-
-{-
-  Main export: This is for integrating the module in the
-  application. Note, there is not view, as this is solely
-  a collection.
--}
-comp =  { init = init
-        , update = update
-        , subscriptions = subscriptions
-        }
 
 {-
   Interface exports
@@ -41,7 +38,7 @@ subscriptions : Model -> Sub Msg
 subscriptions model = WebSocket.listen socketAddr ExtUpdate
 
 -- MESSAGES
-type Msg = 
+type Msg =
       NoOp
     | ExtUpdate String
     | AddObject ObjectType
@@ -57,3 +54,7 @@ update msg model =
         ExtUpdate msg -> ( {
                 objects = {msg = msg} :: model.objects,
             }, Cmd.none )
+
+{-
+Interface functions
+-}
