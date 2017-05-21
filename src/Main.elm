@@ -7,7 +7,6 @@ import Html.Events exposing (..)
 
 import Material
 import Material.Grid as G
-import Material.List as L
 
 import Model exposing (..)
 import Msg exposing (..)
@@ -16,6 +15,7 @@ import Subscriptions exposing (..)
 import Layout exposing (..)
 
 import View.InputForm exposing (..)
+import View.ListMessages exposing (..)
 
 
 -- VIEW
@@ -30,13 +30,9 @@ top model =
        , G.cell [ G.size G.Tablet 8, G.size G.Desktop 6, G.size G.Phone 12 ]
            [ div []
              (    (inputForm model)
-               ++ [(L.ul [] (showAllMessages model.chatMsgs))])
+               ++ [listMessages model])
            ]
        ]]
-
-showAllMessages msgs = case msgs of
-    []      -> []
-    (x::xs) -> (L.li [] [text x]) :: showAllMessages xs
 
 -- MAIN
 
