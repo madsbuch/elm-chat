@@ -20,6 +20,7 @@ for all smaller applications. First, what constitutes a little application?
 * Small model: The application state should be representable in a little set
   of types. Thumb rule: They should all fit in one file such that the reader
   of the code can get an overview.
+* Small number of messages: They should all fit en one file.
 * Only one logical component in the application.
 
 The structure is as follows:

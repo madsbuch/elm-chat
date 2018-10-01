@@ -4,7 +4,7 @@ import Material.List as L
 import Material.Options as Options exposing (css)
 import Html exposing (text)
 
-import Model exposing (..)
+import Model exposing (Model)
 
 listMessages model = L.ul [] (showAllMessages model.chatMsgs)
 
